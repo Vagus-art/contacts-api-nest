@@ -10,7 +10,7 @@ import {
 import { CreateContactDto } from './dto/create-contact.dto';
 import { ContactsService } from './contacts.service';
 import { Contact, ContactResponse } from './interfaces/contact.interface';
-import { ContactsEntity } from './contacts.entity';
+import { ContactsEntity } from './entities/contacts.entity';
 
 
 @Controller('api/contacts')
@@ -19,18 +19,18 @@ export class ContactsController {
   constructor(private readonly CscService : ContactsService) {}
 
   @Get(':offset?')
-  async getContactsDefault(@Param('offset') offset?: number): Promise<Contact[]> {
-    return await this.CscService.getContactsDefault(offset);
+  getContactsDefault(@Param('offset') offset?: number): Promise<Contact[]> {
+    return this.CscService.getContactsDefault(offset);
   }
 
   @Get('/id/:id')
-  async getContactById(@Param('id') id: number): Promise<Contact> {
-    return await this.CscService.getContactById(id);
+  getContactById(@Param('id') id: number): Promise<Contact> {
+    return this.CscService.getContactById(id);
   }
 
   @Get('/search/:search')
-  async getContactsBySearch(@Param('search') search: string): Promise<Contact[]> {
-    return await this.CscService.getContactsBySearch(search);
+  getContactsBySearch(@Param('search') search: string): Promise<Contact[]> {
+    return this.CscService.getContactsBySearch(search);
   }
 
   @Post()

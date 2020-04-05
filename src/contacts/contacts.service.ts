@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Contact } from './interfaces/contact.interface';
 import { CreateContactDto } from './dto/create-contact.dto';
-import { ContactsEntity } from './contacts.entity';
+import { ContactsEntity } from './entities/contacts.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 

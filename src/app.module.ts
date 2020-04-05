@@ -4,7 +4,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ContactsModule } from './contacts/contacts.module';
-import { ContactsEntity } from './contacts/contacts.entity';
+import { ContactsEntity } from './contacts/entities/contacts.entity';
 
 @Module({
   imports: [TypeOrmModule.forRoot({
