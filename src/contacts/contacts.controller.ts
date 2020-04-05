@@ -8,44 +8,43 @@ import {
   Body,
 } from '@nestjs/common';
 import { CreateContactDto } from './dto/create-contact.dto';
+import { ContactsService } from './contacts.service';
+import { Contact, ContactResponse } from './interfaces/contact.interface';
+import { ContactsEntity } from './contacts.entity';
 
 
-//mock response to delete request endpoint
-const userMock : CreateContactDto = {
-    name: "Michael Jordan",
-    phone: 12345678
-} 
-
-
-@Controller('contacts')
+@Controller('api/contacts')
 export class ContactsController {
-  @Get(':offset')
-  getContactsDefault(@Param('offset') offset: number): string {
-    return `this will return pages depending on offset: ${offset}`;
+
+  constructor(private readonly CscService : ContactsService) {}
+
+  @Get(':offset?')
+  async getContactsDefault(@Param('offset') offset?: number): Promise<Contact[]> {
+    return await this.CscService.getContactsDefault(offset);
   }
 
   @Get('/id/:id')
-  getContactById(@Param('id') id: number): { message: string; data: CreateContactDto } {
-    return {message:`you searched for ${id}`, data:userMock};
+  async getContactById(@Param('id') id: number): Promise<Contact> {
+    return await this.CscService.getContactById(id);
   }
 
   @Get('/search/:search')
-  getContactBySearch(@Param('search') search: number): string {
-    return `you searched for ${search}`;
+  async getContactsBySearch(@Param('search') search: string): Promise<Contact[]> {
+    return await this.CscService.getContactsBySearch(search);
   }
 
   @Post()
-  createContact(@Body() NewContact: CreateContactDto): { message: string; data: CreateContactDto } {
-    return { message: 'you have sent this', data: NewContact };
+  createContact(@Body() NewContact: CreateContactDto): ContactResponse {
+    return { message: 'you have sent this', data: this.CscService.createContact(NewContact) };
   }
 
   @Put(':id')
-  updateContactById(@Body() UpdatedContact: CreateContactDto, @Param('id') id: number): { message: string; data: CreateContactDto } {
-    return { message: `you have sent this to update the user with id : ${id}`, data: UpdatedContact };
+  updateContactById(@Body() UpdatedContact: CreateContactDto, @Param('id') id: number): ContactResponse {
+    return { message: `you have updated the user : ${id}`, data: this.CscService.updateContactById(UpdatedContact,id) };
   }
 
   @Delete(':id')
-  deleteContactById(@Param('id') id: number) : {message:string,deletedUser:CreateContactDto} {
-      return { message: `you have deleted this user with id: ${id}`, deletedUser: userMock}
+  deleteContactById(@Param('id') id: number) : Promise<ContactsEntity> {
+      return this.CscService.deleteContactById(id);
   }
 }
