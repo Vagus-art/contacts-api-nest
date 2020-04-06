@@ -2,17 +2,16 @@ import { Injectable } from '@nestjs/common';
 import { Contact } from './interfaces/contact.interface';
 import { CreateContactDto } from './dto/create-contact.dto';
 import { ContactsEntity } from './entities/contacts.entity';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { ContactsRepository } from './repositories/contacts.repository';
 
 @Injectable()
 export class ContactsService {
-  constructor(
-    @InjectRepository(ContactsEntity)
-    private contactsRepository: Repository<ContactsEntity>,
-  ) {}
+  constructor(private readonly contactsRepository: ContactsRepository) {}
 
-  getContactsDefault(offset: number): Promise<ContactsEntity[]> {
+  getContactsDefault(offset: number | undefined): Promise<Contact[]> {
+    if (!offset) {
+      offset = 0;
+    }
     return this.contactsRepository
       .createQueryBuilder('contact')
       .limit(10)
@@ -21,11 +20,14 @@ export class ContactsService {
       .getMany();
   }
 
-  getContactById(id: number): Promise<ContactsEntity> {
+  getContactById(id: number): Promise<Contact> {
     return this.contactsRepository.findOne(id);
   }
 
-  getContactsBySearch(search?: string): Promise<ContactsEntity[]> {
+  getContactsBySearch(search?: string | undefined): Promise<Contact[]> {
+    if (!search) {
+      search = '';
+    }
     return this.contactsRepository
       .createQueryBuilder('contact')
       .where('contact.name ilike :name', { name: '%' + search + '%' })
@@ -46,7 +48,7 @@ export class ContactsService {
     };
   }
 
-  deleteContactById(id: number): Promise<ContactsEntity> {
+  deleteContactById(id: number): Promise<Contact> {
     return this.contactsRepository.findOne(id);
   }
 }
