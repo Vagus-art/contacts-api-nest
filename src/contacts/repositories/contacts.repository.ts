@@ -1,4 +1,4 @@
-import { EntityRepository, Repository, DeleteResult } from 'typeorm';
+import { EntityRepository, Repository, DeleteResult, UpdateResult } from 'typeorm';
 import { ContactsEntity } from '../entities/contacts.entity';
 import { Contact } from '../interfaces/contact.interface';
 import { CreateContactDto } from '../dto/create-contact.dto';
@@ -29,8 +29,9 @@ export class ContactsRepository extends Repository<ContactsEntity> {
     return this.save(NewContact);
   }
 
-  updateContact(UpdatedContact: UpdateContactDto): Promise<Contact> {
-    return this.save(UpdatedContact);
+  updateContact(UpdatedContact: UpdateContactDto): Promise<UpdateResult> {
+    const { name, phone, id } = UpdatedContact;
+    return this.createQueryBuilder().update(ContactsEntity).set({ name, phone }).where("id = :id", { id}).execute();;
   }
 
   deleteContactById(id: number): Promise<DeleteResult> {    

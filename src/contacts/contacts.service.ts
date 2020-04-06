@@ -3,7 +3,7 @@ import { Contact } from './interfaces/contact.interface';
 import { CreateContactDto } from './dto/create-contact.dto';
 import { UpdateContactDto } from './dto/update-contact.dto';
 import { ContactsRepository } from './repositories/contacts.repository';
-import { DeleteResult } from 'typeorm';
+import { DeleteResult, UpdateResult } from 'typeorm';
 
 @Injectable()
 export class ContactsService {
@@ -31,12 +31,14 @@ export class ContactsService {
     return this.contactsRepository.createContact(NewContact);
   }
 
-  async updateContact(UpdatedContact: UpdateContactDto): Promise<Contact> {
+  async updateContact(
+    UpdatedContact: UpdateContactDto,
+  ): Promise<{ old: Contact; new: Contact }> {
     const OldContact = await this.getContactById(UpdatedContact.id);
-    if(OldContact){
-      return this.contactsRepository.updateContact(UpdatedContact);
-    }
-    else{
+    if (OldContact) {
+      await this.contactsRepository.updateContact(UpdatedContact);
+      return { old: OldContact, new: UpdatedContact };
+    } else {
       throw new HttpException('Contact not found', HttpStatus.NOT_FOUND);
     }
   }

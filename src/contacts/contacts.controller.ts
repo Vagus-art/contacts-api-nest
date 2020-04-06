@@ -13,7 +13,6 @@ import { FindOneParams } from './dto/findoneparams.dto';
 import { ContactsService } from './contacts.service';
 import { Contact, ContactResponse } from './interfaces/contact.interface';
 
-
 @Controller('api/contacts')
 export class ContactsController {
   constructor(private readonly CscService: ContactsService) {}
@@ -50,11 +49,8 @@ export class ContactsController {
   @Put()
   async updateContactById(
     @Body() UpdatedContact: UpdateContactDto,
-  ): Promise<ContactResponse> {
-    return {
-      message: `you have updated the user : ${UpdatedContact.name}`,
-      data: await this.CscService.updateContact(UpdatedContact),
-    };
+  ): Promise<{ old: Contact; new: Contact }> {
+    return await this.CscService.updateContact(UpdatedContact);
   }
 
   @Delete(':id')

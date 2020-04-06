@@ -1,14 +1,14 @@
-import { IsString, Length, IsNumberString} from 'class-validator';
+import { IsString, Length, IsNumberString, IsInt } from 'class-validator';
 
 export class UpdateContactDto {
-    @IsString()
-    @Length(5, 20)
-    name: string;
+  @IsInt()
+  id: number;
 
-    @IsNumberString()
-    @Length(5, 20)
-    phone: number;
+  @IsString()
+  @Length(5, 20)
+  name: string;
 
-    @IsNumberString()
-    id: number;
+  @IsNumberString()
+  @Length(5, 20)
+  phone: number;
 }
