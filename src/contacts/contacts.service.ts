@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Contact } from './interfaces/contact.interface';
 import { CreateContactDto } from './dto/create-contact.dto';
-import { ContactsEntity } from './entities/contacts.entity';
 import { ContactsRepository } from './repositories/contacts.repository';
 
 @Injectable()
@@ -12,27 +11,18 @@ export class ContactsService {
     if (!offset) {
       offset = 0;
     }
-    return this.contactsRepository
-      .createQueryBuilder('contact')
-      .limit(10)
-      .orderBy('name')
-      .offset(offset * 10)
-      .getMany();
+    return this.contactsRepository.getContactsDefault(offset);
   }
 
   getContactById(id: number): Promise<Contact> {
-    return this.contactsRepository.findOne(id);
+    return this.contactsRepository.getContactById(id);
   }
 
   getContactsBySearch(search?: string | undefined): Promise<Contact[]> {
     if (!search) {
       search = '';
     }
-    return this.contactsRepository
-      .createQueryBuilder('contact')
-      .where('contact.name ilike :name', { name: '%' + search + '%' })
-      .limit(10)
-      .getMany();
+    return this.contactsRepository.getContactsBySearch(search);
   }
 
   createContact(NewContact: CreateContactDto): Contact {
@@ -49,6 +39,6 @@ export class ContactsService {
   }
 
   deleteContactById(id: number): Promise<Contact> {
-    return this.contactsRepository.findOne(id);
+    return this.contactsRepository.deleteContactById(id);
   }
 }
