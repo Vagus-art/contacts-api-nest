@@ -25,11 +25,8 @@ export class ContactsService {
     return this.contactsRepository.getContactsBySearch(search);
   }
 
-  createContact(NewContact: CreateContactDto): Contact {
-    return {
-      ...NewContact,
-      id: 13123,
-    };
+  createContact(NewContact: CreateContactDto): Promise<Contact> {
+    return this.contactsRepository.createContact(NewContact);
   }
 
   updateContactById(UpdatedContact: CreateContactDto, id: number): Contact {
