@@ -1,10 +1,10 @@
-export interface Contact {
-  id?: number;
+export class Contact {
+  id: number;
   name: string;
   phone: number;
 }
 
-export interface ContactResponse {
+export class ContactResponse {
   message: string;
   data: Contact;
 }

@@ -35,6 +35,7 @@ export class ContactsService {
   updateContactById(UpdatedContact: CreateContactDto, id: number): Contact {
     return {
       ...UpdatedContact,
+      id
     };
   }
 
