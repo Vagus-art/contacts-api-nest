@@ -1,14 +1,7 @@
-import { IsString, Length, IsNumberString, IsInt } from 'class-validator';
+import { IsInt } from 'class-validator';
+import { CreateContactDto } from './create-contact.dto';
 
-export class UpdateContactDto {
+export class UpdateContactDto extends CreateContactDto {
   @IsInt()
   id: number;
-
-  @IsString()
-  @Length(5, 20)
-  name: string;
-
-  @IsNumberString()
-  @Length(5, 20)
-  phone: number;
 }

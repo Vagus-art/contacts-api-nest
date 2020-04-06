@@ -3,7 +3,7 @@ import { Contact } from './interfaces/contact.interface';
 import { CreateContactDto } from './dto/create-contact.dto';
 import { UpdateContactDto } from './dto/update-contact.dto';
 import { ContactsRepository } from './repositories/contacts.repository';
-import { DeleteResult, UpdateResult } from 'typeorm';
+import { DeleteResult } from 'typeorm';
 
 @Injectable()
 export class ContactsService {

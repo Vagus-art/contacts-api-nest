@@ -6,12 +6,15 @@ import {
   Delete,
   Param,
   Body,
+  UsePipes,
 } from '@nestjs/common';
 import { CreateContactDto } from './dto/create-contact.dto';
 import { UpdateContactDto } from './dto/update-contact.dto';
 import { FindOneParams } from './dto/findoneparams.dto';
 import { ContactsService } from './contacts.service';
 import { Contact, ContactResponse } from './interfaces/contact.interface';
+import { SanitizeCreateContact } from './pipes/sanitize.create-contact.pipe';
+import { SanitizeUpdateContact } from './pipes/sanitize.update-contact.pipe';
 
 @Controller('api/contacts')
 export class ContactsController {
@@ -38,7 +41,7 @@ export class ContactsController {
 
   @Post()
   async createContact(
-    @Body() NewContact: CreateContactDto,
+    @Body(SanitizeCreateContact) NewContact: CreateContactDto,
   ): Promise<ContactResponse> {
     return {
       message: 'you have sent this',
@@ -48,7 +51,7 @@ export class ContactsController {
 
   @Put()
   async updateContactById(
-    @Body() UpdatedContact: UpdateContactDto,
+    @Body(SanitizeUpdateContact) UpdatedContact: UpdateContactDto,
   ): Promise<{ old: Contact; new: Contact }> {
     return await this.CscService.updateContact(UpdatedContact);
   }
