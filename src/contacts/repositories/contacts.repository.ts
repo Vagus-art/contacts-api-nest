@@ -1,7 +1,8 @@
-import { EntityRepository, Repository } from 'typeorm';
+import { EntityRepository, Repository, DeleteResult } from 'typeorm';
 import { ContactsEntity } from '../entities/contacts.entity';
 import { Contact } from '../interfaces/contact.interface';
 import { CreateContactDto } from '../dto/create-contact.dto';
+import { UpdateContactDto } from '../dto/update-contact.dto';
 
 @EntityRepository(ContactsEntity)
 export class ContactsRepository extends Repository<ContactsEntity> {
@@ -28,7 +29,11 @@ export class ContactsRepository extends Repository<ContactsEntity> {
     return this.save(NewContact);
   }
 
-  deleteContactById(id: number): Promise<Contact> {
-    return this.findOne(id);
+  updateContact(UpdatedContact: UpdateContactDto): Promise<Contact> {
+    return this.save(UpdatedContact);
+  }
+
+  deleteContactById(id: number): Promise<DeleteResult> {    
+    return this.delete(id)
   }
 }

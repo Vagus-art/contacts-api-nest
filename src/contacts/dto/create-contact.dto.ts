@@ -1,12 +1,11 @@
-import { IsString, Length, IsInt } from 'class-validator';
-import { IntLength } from '../../customValidators/IntLenght.validator';
+import { IsString, Length, IsNumberString } from 'class-validator';
 
 export class CreateContactDto {
     @IsString()
     @Length(5, 20)
     name: string;
 
-    @IsInt()
-    @IntLength(5, 20)
+    @IsNumberString()
+    @Length(5, 20)
     phone: number;
 }

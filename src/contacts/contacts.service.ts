@@ -1,7 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { Contact } from './interfaces/contact.interface';
 import { CreateContactDto } from './dto/create-contact.dto';
+import { UpdateContactDto } from './dto/update-contact.dto';
 import { ContactsRepository } from './repositories/contacts.repository';
+import { DeleteResult } from 'typeorm';
 
 @Injectable()
 export class ContactsService {
@@ -29,14 +31,17 @@ export class ContactsService {
     return this.contactsRepository.createContact(NewContact);
   }
 
-  updateContactById(UpdatedContact: CreateContactDto, id: number): Contact {
-    return {
-      ...UpdatedContact,
-      id
-    };
+  async updateContact(UpdatedContact: UpdateContactDto): Promise<Contact> {
+    const OldContact = await this.getContactById(UpdatedContact.id);
+    if(OldContact){
+      return this.contactsRepository.updateContact(UpdatedContact);
+    }
+    else{
+      throw new HttpException('Contact not found', HttpStatus.NOT_FOUND);
+    }
   }
 
-  deleteContactById(id: number): Promise<Contact> {
+  deleteContactById(id: number): Promise<DeleteResult> {
     return this.contactsRepository.deleteContactById(id);
   }
 }
