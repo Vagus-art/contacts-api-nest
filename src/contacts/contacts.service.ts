@@ -9,6 +9,10 @@ import { DeleteResult } from 'typeorm';
 export class ContactsService {
   constructor(private readonly contactsRepository: ContactsRepository) {}
 
+  getAllContacts(): Promise<Contact[]> {
+    return this.contactsRepository.getAllContacts();
+  }
+
   getContactsDefault(offset: number | undefined): Promise<Contact[]> {
     if (!offset) {
       offset = 0;

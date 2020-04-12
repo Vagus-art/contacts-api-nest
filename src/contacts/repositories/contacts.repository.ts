@@ -6,6 +6,10 @@ import { UpdateContactDto } from '../dto/update-contact.dto';
 
 @EntityRepository(ContactsEntity)
 export class ContactsRepository extends Repository<ContactsEntity> {
+  getAllContacts(): Promise<Contact[]>{
+    return this.find();
+  }
+
   getContactsDefault(offset: number): Promise<Contact[]> {
     return this.createQueryBuilder('contact')
       .limit(10)

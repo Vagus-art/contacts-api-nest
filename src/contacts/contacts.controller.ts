@@ -20,6 +20,11 @@ import { SanitizeUpdateContact } from './pipes/sanitize.update-contact.pipe';
 export class ContactsController {
   constructor(private readonly CscService: ContactsService) {}
 
+  @Get('/special/all')
+  async getAllContacts(): Promise<Contact[]> {
+    return await this.CscService.getAllContacts();
+  }
+
   @Get('/id/:id')
   async getContactById(@Param('id') id: number): Promise<Contact> {
     return await this.CscService.getContactById(id);
